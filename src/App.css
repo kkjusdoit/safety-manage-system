@@ -107,6 +107,74 @@
   margin-bottom: 56px;
 }
 
+.hero {
+  margin-top: 10px;
+}
+
+.hero-card {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 24px;
+  align-items: center;
+  padding: 28px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(15, 76, 92, 0.9), rgba(42, 157, 143, 0.85));
+  color: white;
+  box-shadow: 0 24px 48px rgba(15, 76, 92, 0.35);
+}
+
+.hero-card h1 {
+  margin: 8px 0 10px;
+  font-size: 28px;
+}
+
+.hero-card p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.hero-profile {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hero-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.hero-name {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.hero-role {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.hero-company {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
 .section-head {
   display: flex;
   flex-wrap: wrap;
@@ -807,6 +875,10 @@
   .movement-item {
     grid-template-columns: 1fr;
     gap: 10px;
+  }
+
+  .hero-card {
+    grid-template-columns: 1fr;
   }
 }
 
