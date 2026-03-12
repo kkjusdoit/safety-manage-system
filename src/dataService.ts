@@ -2,7 +2,11 @@ import type { EducationBatch, Employee, EntryExitLog, RewardRecord } from './typ
 
 const withBase = (path: string) => {
   const safePath = path.replace(/^\/+/, '')
-  return new URL(safePath, import.meta.env.BASE_URL).toString()
+  const base = import.meta.env.BASE_URL || '/'
+  if (base.endsWith('/')) {
+    return `${base}${safePath}`
+  }
+  return `${base}/${safePath}`
 }
 
 const fetchJson = async <T,>(path: string): Promise<T> => {
