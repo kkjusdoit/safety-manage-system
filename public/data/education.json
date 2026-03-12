@@ -1,0 +1,85 @@
+{
+  "batches": [
+    {
+      "id": "B2026-03-01",
+      "title": "3月第一批新入场木工班组安全教育",
+      "level": "三级",
+      "startDate": "2026-03-02",
+      "trainer": "赵六",
+      "participants": ["E001", "E003"],
+      "status": "进行中",
+      "completion": 66,
+      "records": {
+        "company": {
+          "time": "2026-03-02 09:00",
+          "hours": 2,
+          "score": 86
+        },
+        "project": {
+          "time": "2026-03-05 14:00",
+          "leader": "王强",
+          "photo": true
+        },
+        "team": {
+          "time": "待安排",
+          "leader": "张三",
+          "signed": false
+        }
+      }
+    },
+    {
+      "id": "B2026-02-02",
+      "title": "2月第二批钢筋班组安全教育",
+      "level": "三级",
+      "startDate": "2026-02-19",
+      "trainer": "赵六",
+      "participants": ["E002"],
+      "status": "已完成",
+      "completion": 100,
+      "records": {
+        "company": {
+          "time": "2026-02-19 09:00",
+          "hours": 2,
+          "score": 92
+        },
+        "project": {
+          "time": "2026-02-20 13:30",
+          "leader": "李工",
+          "photo": true
+        },
+        "team": {
+          "time": "2026-02-22 08:30",
+          "leader": "周班长",
+          "signed": true
+        }
+      }
+    },
+    {
+      "id": "B2026-01-01",
+      "title": "1月安全员复训",
+      "level": "公司级",
+      "startDate": "2026-01-06",
+      "trainer": "总监办",
+      "participants": ["E004"],
+      "status": "已完成",
+      "completion": 100,
+      "records": {
+        "company": {
+          "time": "2026-01-06 10:00",
+          "hours": 3,
+          "score": 95
+        },
+        "project": {
+          "time": "2026-01-06 14:00",
+          "leader": "总监",
+          "photo": true
+        },
+        "team": {
+          "time": "2026-01-07 09:00",
+          "leader": "赵六",
+          "signed": true
+        }
+      }
+    }
+  ]
+}
