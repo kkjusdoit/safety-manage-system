@@ -1,7 +1,12 @@
 import type { EducationBatch, Employee, EntryExitLog, RewardRecord } from './types'
 
+const withBase = (path: string) => {
+  const safePath = path.replace(/^\/+/, '')
+  return new URL(safePath, import.meta.env.BASE_URL).toString()
+}
+
 const fetchJson = async <T,>(path: string): Promise<T> => {
-  const response = await fetch(path)
+  const response = await fetch(withBase(path))
   if (!response.ok) {
     throw new Error(`Failed to load ${path}`)
   }
