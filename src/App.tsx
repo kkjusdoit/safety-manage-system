@@ -61,6 +61,7 @@ function App() {
   const [risks, setRisks] = useState<RiskSource[]>([])
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
   const [search, setSearch] = useState('')
+  const [riskCategory, setRiskCategory] = useState('全部')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -187,13 +188,38 @@ function App() {
     return list.slice(0, 5)
   }, [employees, referenceDate])
 
-  const riskStats = useMemo(() => {
-    const level1 = risks.filter((risk) => risk.level === 'Ⅰ级').length
-    const level2 = risks.filter((risk) => risk.level === 'Ⅱ级').length
-    const level3 = risks.filter((risk) => risk.level === 'Ⅲ级').length
-    const attention = risks.filter((risk) => risk.status !== '在控').length
-    return { level1, level2, level3, attention }
+  const riskCategories = useMemo(() => {
+    const categories = Array.from(new Set(risks.map((risk) => risk.category)))
+    return ['全部', ...categories]
   }, [risks])
+
+  const filteredRisks = useMemo(() => {
+    if (riskCategory === '全部') return risks
+    return risks.filter((risk) => risk.category === riskCategory)
+  }, [risks, riskCategory])
+
+  const riskStats = useMemo(() => {
+    const level1 = filteredRisks.filter((risk) => risk.level === 'Ⅰ级').length
+    const level2 = filteredRisks.filter((risk) => risk.level === 'Ⅱ级').length
+    const level3 = filteredRisks.filter((risk) => risk.level === 'Ⅲ级').length
+    const attention = filteredRisks.filter((risk) => risk.status !== '在控').length
+    return { level1, level2, level3, attention }
+  }, [filteredRisks])
+
+  const riskTrend = useMemo(() => {
+    const map = new Map<string, number>()
+    filteredRisks.forEach((risk) => {
+      map.set(risk.lastCheck, (map.get(risk.lastCheck) || 0) + 1)
+    })
+    const sorted = Array.from(map.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([date, count]) => ({ date, count }))
+    return sorted.slice(-6)
+  }, [filteredRisks])
+
+  const riskTrendMax = useMemo(() => {
+    return riskTrend.reduce((max, item) => Math.max(max, item.count), 1)
+  }, [riskTrend])
 
   const filteredEmployees = useMemo(() => {
     const keyword = search.trim().toLowerCase()
@@ -529,34 +555,83 @@ function App() {
             <MetricCard label="异常处置" value={riskStats.attention} sub="预警/整改" tone="warn" />
           </div>
 
+          <div className="risk-dashboard">
+            <div className="panel">
+              <div className="panel-head">
+                <h3>风险巡检趋势</h3>
+                <span className="panel-sub">近 6 次巡检记录</span>
+              </div>
+              <div className="trend-chart">
+                {riskTrend.length === 0 ? (
+                  <div className="empty">暂无巡检记录</div>
+                ) : (
+                  riskTrend.map((item) => (
+                    <div key={item.date} className="trend-item">
+                      <div
+                        className="trend-bar"
+                        style={{
+                          height: `${(item.count / riskTrendMax) * 100}%`
+                        }}
+                      />
+                      <div className="trend-label">{formatDate(item.date)}</div>
+                      <div className="trend-value">{item.count} 处</div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+            <div className="panel">
+              <div className="panel-head">
+                <h3>风险分类筛选</h3>
+                <span className="panel-sub">当前分类：{riskCategory}</span>
+              </div>
+              <div className="filter-chips">
+                {riskCategories.map((category) => (
+                  <button
+                    key={category}
+                    className={`chip-btn ${riskCategory === category ? 'active' : ''}`}
+                    onClick={() => setRiskCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+              <div className="filter-meta">当前展示 {filteredRisks.length} 条风险源</div>
+            </div>
+          </div>
+
           <div className="panel">
             <div className="panel-head">
               <h3>风险源清单</h3>
               <span className="panel-sub">最新巡检与处置措施</span>
             </div>
             <div className="risk-list">
-              {risks.map((risk) => (
-                <div key={risk.id} className="risk-item">
-                  <div>
-                    <div className="risk-title">{risk.name}</div>
-                    <div className="risk-meta">
-                      {risk.location} · {risk.category} · 最近巡检 {formatDate(risk.lastCheck)} · 责任人{' '}
-                      {risk.owner}
+              {filteredRisks.length === 0 ? (
+                <div className="empty">暂无匹配的风险源</div>
+              ) : (
+                filteredRisks.map((risk) => (
+                  <div key={risk.id} className="risk-item">
+                    <div>
+                      <div className="risk-title">{risk.name}</div>
+                      <div className="risk-meta">
+                        {risk.location} · {risk.category} · 最近巡检 {formatDate(risk.lastCheck)} · 责任人{' '}
+                        {risk.owner}
+                      </div>
+                      <div className="risk-control">措施：{risk.control}</div>
                     </div>
-                    <div className="risk-control">措施：{risk.control}</div>
+                    <div className="risk-tags">
+                      <StatusPill
+                        label={risk.level}
+                        tone={risk.level === 'Ⅰ级' ? 'warn' : risk.level === 'Ⅱ级' ? 'muted' : 'good'}
+                      />
+                      <StatusPill
+                        label={risk.status}
+                        tone={risk.status === '在控' ? 'good' : 'warn'}
+                      />
+                    </div>
                   </div>
-                  <div className="risk-tags">
-                    <StatusPill
-                      label={risk.level}
-                      tone={risk.level === 'Ⅰ级' ? 'warn' : risk.level === 'Ⅱ级' ? 'muted' : 'good'}
-                    />
-                    <StatusPill
-                      label={risk.status}
-                      tone={risk.status === '在控' ? 'good' : 'warn'}
-                    />
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </section>

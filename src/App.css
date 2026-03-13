@@ -655,6 +655,45 @@
   gap: 12px;
 }
 
+.risk-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.trend-chart {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  min-height: 180px;
+}
+
+.trend-item {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  font-size: 12px;
+  color: var(--slate-500);
+}
+
+.trend-bar {
+  width: 28px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--green), var(--teal-600));
+  min-height: 24px;
+  transition: height 0.2s ease;
+}
+
+.trend-label {
+  font-weight: 600;
+  color: var(--slate-600);
+}
+
+.trend-value {
+  font-size: 11px;
+}
+
 .risk-item {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -685,6 +724,35 @@
   flex-direction: column;
   gap: 8px;
   align-items: flex-end;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip-btn {
+  border: 1px solid rgba(15, 76, 92, 0.2);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: white;
+  color: var(--slate-600);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.chip-btn.active {
+  background: rgba(15, 76, 92, 0.15);
+  color: var(--teal-800);
+  border-color: rgba(15, 76, 92, 0.4);
+}
+
+.filter-meta {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--slate-500);
 }
 
 .reward-grid {
@@ -962,5 +1030,10 @@
 
   .table-card th {
     display: none;
+  }
+
+  .trend-chart {
+    overflow-x: auto;
+    padding-bottom: 6px;
   }
 }
