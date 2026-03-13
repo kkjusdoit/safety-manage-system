@@ -655,6 +655,129 @@
   gap: 12px;
 }
 
+.inspection-list {
+  display: grid;
+  gap: 12px;
+}
+
+.inspection-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(15, 76, 92, 0.04);
+}
+
+.inspection-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.inspection-meta {
+  font-size: 12px;
+  color: var(--slate-600);
+  margin-bottom: 6px;
+}
+
+.inspection-summary {
+  font-size: 12px;
+  color: var(--slate-500);
+}
+
+.inspection-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.policy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.policy-card {
+  padding: 18px;
+  border-radius: 20px;
+  background: white;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: grid;
+  gap: 12px;
+}
+
+.policy-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.policy-title {
+  font-weight: 700;
+}
+
+.policy-meta {
+  font-size: 12px;
+  color: var(--slate-500);
+}
+
+.policy-owner {
+  font-size: 12px;
+  color: var(--slate-600);
+}
+
+.policy-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.policy-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.major-panel {
+  background: linear-gradient(135deg, rgba(231, 111, 81, 0.1), rgba(255, 255, 255, 0.9));
+}
+
+.major-list {
+  display: grid;
+  gap: 16px;
+}
+
+.major-item {
+  padding: 16px;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid rgba(231, 111, 81, 0.2);
+  display: grid;
+  gap: 8px;
+}
+
+.major-title {
+  font-weight: 700;
+}
+
+.major-meta {
+  font-size: 12px;
+  color: var(--slate-600);
+}
+
+.major-control {
+  font-size: 12px;
+  color: var(--slate-500);
+}
+
+.major-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .risk-dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -987,6 +1110,15 @@
   }
 
   .risk-tags {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .inspection-item {
+    grid-template-columns: 1fr;
+  }
+
+  .inspection-tags {
     flex-direction: row;
     justify-content: flex-start;
   }

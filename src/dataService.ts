@@ -1,4 +1,13 @@
-import type { EducationBatch, Employee, EntryExitLog, RewardRecord, RiskSource } from './types'
+import type {
+  EducationBatch,
+  Employee,
+  EntryExitLog,
+  RewardRecord,
+  RiskSource,
+  InspectionRecord,
+  PolicyDoc,
+  MajorRisk
+} from './types'
 
 const withBase = (path: string) => {
   const safePath = path.replace(/^\/+/, '')
@@ -37,5 +46,17 @@ export const dataService = {
   getRisks: async () => {
     const data = await fetchJson<{ risks: RiskSource[] }>('/data/risks.json')
     return data.risks
+  },
+  getInspections: async () => {
+    const data = await fetchJson<{ inspections: InspectionRecord[] }>('/data/inspections.json')
+    return data.inspections
+  },
+  getPolicies: async () => {
+    const data = await fetchJson<{ policies: PolicyDoc[] }>('/data/policies.json')
+    return data.policies
+  },
+  getMajorRisks: async () => {
+    const data = await fetchJson<{ majorRisks: MajorRisk[] }>('/data/major_risks.json')
+    return data.majorRisks
   }
 }

@@ -84,3 +84,34 @@ export interface RiskSource {
   owner: string
   control: string
 }
+
+export interface InspectionRecord {
+  id: string
+  date: string
+  area: string
+  inspector: string
+  summary: string
+  findings: number
+  riskLevel: 'Ⅰ级' | 'Ⅱ级' | 'Ⅲ级'
+  status: '合格' | '整改中' | '整改完成'
+}
+
+export interface PolicyDoc {
+  id: string
+  title: string
+  category: string
+  updated: string
+  owner: string
+  keywords: string[]
+}
+
+export interface MajorRisk {
+  id: string
+  name: string
+  location: string
+  level: '重大'
+  status: '在控' | '预警' | '整改中'
+  lastUpdate: string
+  owner: string
+  control: string
+}

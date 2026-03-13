@@ -1,0 +1,34 @@
+{
+  "majorRisks": [
+    {
+      "id": "MR-001",
+      "name": "塔吊回转半径监控",
+      "location": "塔吊T2作业区",
+      "level": "重大",
+      "status": "预警",
+      "lastUpdate": "2026-03-13",
+      "owner": "设备主管",
+      "control": "实时监控盲区，增设禁入警示" 
+    },
+    {
+      "id": "MR-002",
+      "name": "高处作业临边防护",
+      "location": "3#楼屋面",
+      "level": "重大",
+      "status": "整改中",
+      "lastUpdate": "2026-03-12",
+      "owner": "安全员A",
+      "control": "加固围挡 + 二次复查" 
+    },
+    {
+      "id": "MR-003",
+      "name": "深基坑监测",
+      "location": "基坑北侧",
+      "level": "重大",
+      "status": "在控",
+      "lastUpdate": "2026-03-11",
+      "owner": "监测单位",
+      "control": "每日观测位移，超限自动报警" 
+    }
+  ]
+}

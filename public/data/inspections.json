@@ -1,0 +1,44 @@
+{
+  "inspections": [
+    {
+      "id": "INSP-2026-03-13",
+      "date": "2026-03-13",
+      "area": "2#楼施工区",
+      "inspector": "安全员A",
+      "summary": "发现临边防护缺失 1 处，已通知班组加设围挡。",
+      "findings": 1,
+      "riskLevel": "Ⅱ级",
+      "status": "整改中"
+    },
+    {
+      "id": "INSP-2026-03-12",
+      "date": "2026-03-12",
+      "area": "塔吊作业区",
+      "inspector": "设备主管",
+      "summary": "吊装区域警戒线完整，指挥员到岗。",
+      "findings": 0,
+      "riskLevel": "Ⅰ级",
+      "status": "合格"
+    },
+    {
+      "id": "INSP-2026-03-11",
+      "date": "2026-03-11",
+      "area": "地下室动火作业点",
+      "inspector": "项目安全部",
+      "summary": "动火审批齐全，灭火器材已到位。",
+      "findings": 0,
+      "riskLevel": "Ⅱ级",
+      "status": "合格"
+    },
+    {
+      "id": "INSP-2026-03-10",
+      "date": "2026-03-10",
+      "area": "临时用电箱",
+      "inspector": "电工B",
+      "summary": "漏保测试记录缺失，已补录。",
+      "findings": 1,
+      "riskLevel": "Ⅱ级",
+      "status": "整改完成"
+    }
+  ]
+}

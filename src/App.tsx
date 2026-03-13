@@ -1,7 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { dataService } from './dataService'
-import type { EducationBatch, Employee, EntryExitLog, RewardRecord, RiskSource } from './types'
+import type {
+  EducationBatch,
+  Employee,
+  EntryExitLog,
+  RewardRecord,
+  RiskSource,
+  InspectionRecord,
+  PolicyDoc,
+  MajorRisk
+} from './types'
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24
 
@@ -59,6 +68,9 @@ function App() {
   const [entryExitLogs, setEntryExitLogs] = useState<EntryExitLog[]>([])
   const [rewards, setRewards] = useState<RewardRecord[]>([])
   const [risks, setRisks] = useState<RiskSource[]>([])
+  const [inspections, setInspections] = useState<InspectionRecord[]>([])
+  const [policies, setPolicies] = useState<PolicyDoc[]>([])
+  const [majorRisks, setMajorRisks] = useState<MajorRisk[]>([])
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
   const [search, setSearch] = useState('')
   const [riskCategory, setRiskCategory] = useState('全部')
@@ -69,12 +81,24 @@ function App() {
     let active = true
     const loadData = async () => {
       try {
-        const [employeesData, educationData, entryData, rewardData, riskData] = await Promise.all([
+        const [
+          employeesData,
+          educationData,
+          entryData,
+          rewardData,
+          riskData,
+          inspectionData,
+          policyData,
+          majorRiskData
+        ] = await Promise.all([
           dataService.getEmployees(),
           dataService.getEducationBatches(),
           dataService.getEntryExitLogs(),
           dataService.getRewards(),
-          dataService.getRisks()
+          dataService.getRisks(),
+          dataService.getInspections(),
+          dataService.getPolicies(),
+          dataService.getMajorRisks()
         ])
         if (!active) return
         setEmployees(employeesData)
@@ -82,6 +106,9 @@ function App() {
         setEntryExitLogs(entryData)
         setRewards(rewardData)
         setRisks(riskData)
+        setInspections(inspectionData)
+        setPolicies(policyData)
+        setMajorRisks(majorRiskData)
         setLoading(false)
       } catch (err) {
         if (!active) return
@@ -221,6 +248,16 @@ function App() {
     return riskTrend.reduce((max, item) => Math.max(max, item.count), 1)
   }, [riskTrend])
 
+  const inspectionStats = useMemo(() => {
+    const today = referenceDate
+    const todayInspections = inspections.filter((item) => item.date === today)
+    const pending = inspections.filter((item) => item.status === '整改中').length
+    return {
+      today: todayInspections.length,
+      pending
+    }
+  }, [inspections, referenceDate])
+
   const filteredEmployees = useMemo(() => {
     const keyword = search.trim().toLowerCase()
     if (!keyword) return employees
@@ -268,6 +305,9 @@ function App() {
           <a href="#roster">人员台账</a>
           <a href="#education">三级教育</a>
           <a href="#risk">风险源</a>
+          <a href="#inspection">每日巡查</a>
+          <a href="#policy">规章制度</a>
+          <a href="#major-risk">重大风险</a>
           <a href="#movement">进出场</a>
           <a href="#reward">奖惩记录</a>
         </nav>
@@ -632,6 +672,129 @@ function App() {
                   </div>
                 ))
               )}
+            </div>
+          </div>
+        </section>
+
+        <section id="inspection" className="section">
+          <div className="section-head">
+            <div>
+              <h2>每日巡查记录</h2>
+              <p>汇总每日巡查记录与整改闭环，提升现场管控效率。</p>
+            </div>
+            <div className="section-actions">
+              <div className="date-chip">今日巡查 {inspectionStats.today} 次</div>
+              <button className="ghost-btn">发起巡查任务</button>
+            </div>
+          </div>
+
+          <div className="metrics-grid">
+            <MetricCard label="今日巡查" value={inspectionStats.today} sub="按日统计" tone="good" />
+            <MetricCard label="整改中" value={inspectionStats.pending} sub="待闭环" tone="warn" />
+            <MetricCard
+              label="巡查覆盖"
+              value={`${inspections.length} 项`}
+              sub="累计记录"
+              tone="neutral"
+            />
+          </div>
+
+          <div className="panel">
+            <div className="panel-head">
+              <h3>巡查记录清单</h3>
+              <span className="panel-sub">最近巡查与整改状态</span>
+            </div>
+            <div className="inspection-list">
+              {inspections.map((record) => (
+                <div key={record.id} className="inspection-item">
+                  <div>
+                    <div className="inspection-title">{record.area}</div>
+                    <div className="inspection-meta">
+                      {formatDate(record.date)} · 巡查人 {record.inspector} · 发现 {record.findings} 处问题
+                    </div>
+                    <div className="inspection-summary">{record.summary}</div>
+                  </div>
+                  <div className="inspection-tags">
+                    <StatusPill
+                      label={record.riskLevel}
+                      tone={record.riskLevel === 'Ⅰ级' ? 'warn' : 'muted'}
+                    />
+                    <StatusPill
+                      label={record.status}
+                      tone={record.status === '合格' ? 'good' : 'warn'}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="policy" className="section">
+          <div className="section-head">
+            <div>
+              <h2>公司规章制度速查</h2>
+              <p>快速定位作业规范、审批流程与应急预案。</p>
+            </div>
+            <button className="ghost-btn">上传新制度</button>
+          </div>
+
+          <div className="policy-grid">
+            {policies.map((policy) => (
+              <div key={policy.id} className="policy-card">
+                <div className="policy-head">
+                  <div>
+                    <div className="policy-title">{policy.title}</div>
+                    <div className="policy-meta">
+                      {policy.category} · 更新 {formatDate(policy.updated)}
+                    </div>
+                  </div>
+                  <StatusPill label="制度" tone="muted" />
+                </div>
+                <div className="policy-owner">责任部门：{policy.owner}</div>
+                <div className="policy-tags">
+                  {policy.keywords.map((keyword) => (
+                    <span key={keyword} className="chip">
+                      {keyword}
+                    </span>
+                  ))}
+                </div>
+                <div className="policy-actions">
+                  <button className="ghost-btn small">在线查看</button>
+                  <button className="ghost-btn small">下载附件</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="major-risk" className="section">
+          <div className="section-head">
+            <div>
+              <h2>重大风险源监控</h2>
+              <p>对重大风险源进行重点监控与升级处置。</p>
+            </div>
+            <button className="ghost-btn">发布重大风险通报</button>
+          </div>
+
+          <div className="panel major-panel">
+            <div className="major-list">
+              {majorRisks.map((risk) => (
+                <div key={risk.id} className="major-item">
+                  <div className="major-title">{risk.name}</div>
+                  <div className="major-meta">
+                    {risk.location} · 责任人 {risk.owner} · 更新 {formatDate(risk.lastUpdate)}
+                  </div>
+                  <div className="major-control">管控措施：{risk.control}</div>
+                  <div className="major-tags">
+                    <StatusPill label={risk.level} tone="warn" />
+                    <StatusPill
+                      label={risk.status}
+                      tone={risk.status === '在控' ? 'good' : 'warn'}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
