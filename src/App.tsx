@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { dataService } from './dataService'
-import type { EducationBatch, Employee, EntryExitLog, RewardRecord } from './types'
+import type { EducationBatch, Employee, EntryExitLog, RewardRecord, RiskSource } from './types'
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24
 
@@ -58,6 +58,7 @@ function App() {
   const [educationBatches, setEducationBatches] = useState<EducationBatch[]>([])
   const [entryExitLogs, setEntryExitLogs] = useState<EntryExitLog[]>([])
   const [rewards, setRewards] = useState<RewardRecord[]>([])
+  const [risks, setRisks] = useState<RiskSource[]>([])
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
@@ -67,17 +68,19 @@ function App() {
     let active = true
     const loadData = async () => {
       try {
-        const [employeesData, educationData, entryData, rewardData] = await Promise.all([
+        const [employeesData, educationData, entryData, rewardData, riskData] = await Promise.all([
           dataService.getEmployees(),
           dataService.getEducationBatches(),
           dataService.getEntryExitLogs(),
-          dataService.getRewards()
+          dataService.getRewards(),
+          dataService.getRisks()
         ])
         if (!active) return
         setEmployees(employeesData)
         setEducationBatches(educationData)
         setEntryExitLogs(entryData)
         setRewards(rewardData)
+        setRisks(riskData)
         setLoading(false)
       } catch (err) {
         if (!active) return
@@ -184,6 +187,14 @@ function App() {
     return list.slice(0, 5)
   }, [employees, referenceDate])
 
+  const riskStats = useMemo(() => {
+    const level1 = risks.filter((risk) => risk.level === 'Ⅰ级').length
+    const level2 = risks.filter((risk) => risk.level === 'Ⅱ级').length
+    const level3 = risks.filter((risk) => risk.level === 'Ⅲ级').length
+    const attention = risks.filter((risk) => risk.status !== '在控').length
+    return { level1, level2, level3, attention }
+  }, [risks])
+
   const filteredEmployees = useMemo(() => {
     const keyword = search.trim().toLowerCase()
     if (!keyword) return employees
@@ -230,6 +241,7 @@ function App() {
           <a href="#dashboard">总览</a>
           <a href="#roster">人员台账</a>
           <a href="#education">三级教育</a>
+          <a href="#risk">风险源</a>
           <a href="#movement">进出场</a>
           <a href="#reward">奖惩记录</a>
         </nav>
@@ -498,6 +510,54 @@ function App() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section id="risk" className="section">
+          <div className="section-head">
+            <div>
+              <h2>风险源识别监控</h2>
+              <p>分级分类监控各处风险源，动态掌握重点风险。</p>
+            </div>
+            <button className="ghost-btn">导出风险源清单</button>
+          </div>
+
+          <div className="metrics-grid">
+            <MetricCard label="Ⅰ级风险源" value={riskStats.level1} sub="重点监控" tone="warn" />
+            <MetricCard label="Ⅱ级风险源" value={riskStats.level2} sub="常规监管" tone="neutral" />
+            <MetricCard label="Ⅲ级风险源" value={riskStats.level3} sub="日常巡查" tone="good" />
+            <MetricCard label="异常处置" value={riskStats.attention} sub="预警/整改" tone="warn" />
+          </div>
+
+          <div className="panel">
+            <div className="panel-head">
+              <h3>风险源清单</h3>
+              <span className="panel-sub">最新巡检与处置措施</span>
+            </div>
+            <div className="risk-list">
+              {risks.map((risk) => (
+                <div key={risk.id} className="risk-item">
+                  <div>
+                    <div className="risk-title">{risk.name}</div>
+                    <div className="risk-meta">
+                      {risk.location} · {risk.category} · 最近巡检 {formatDate(risk.lastCheck)} · 责任人{' '}
+                      {risk.owner}
+                    </div>
+                    <div className="risk-control">措施：{risk.control}</div>
+                  </div>
+                  <div className="risk-tags">
+                    <StatusPill
+                      label={risk.level}
+                      tone={risk.level === 'Ⅰ级' ? 'warn' : risk.level === 'Ⅱ级' ? 'muted' : 'good'}
+                    />
+                    <StatusPill
+                      label={risk.status}
+                      tone={risk.status === '在控' ? 'good' : 'warn'}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

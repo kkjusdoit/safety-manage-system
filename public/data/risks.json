@@ -1,0 +1,59 @@
+{
+  "risks": [
+    {
+      "id": "RISK-001",
+      "name": "高处作业平台",
+      "location": "3#楼东侧脚手架",
+      "category": "高处作业",
+      "level": "Ⅰ级",
+      "status": "整改中",
+      "lastCheck": "2026-03-12",
+      "owner": "安全员A",
+      "control": "加设双层防护栏并补充警示标识"
+    },
+    {
+      "id": "RISK-002",
+      "name": "临时用电箱",
+      "location": "1#楼西侧配电房",
+      "category": "临时用电",
+      "level": "Ⅱ级",
+      "status": "在控",
+      "lastCheck": "2026-03-11",
+      "owner": "电工B",
+      "control": "每日巡检并记录漏保测试"
+    },
+    {
+      "id": "RISK-003",
+      "name": "塔吊回转区域",
+      "location": "塔吊T2作业半径",
+      "category": "起重吊装",
+      "level": "Ⅰ级",
+      "status": "预警",
+      "lastCheck": "2026-03-10",
+      "owner": "设备主管",
+      "control": "设置禁入线并安排专人指挥"
+    },
+    {
+      "id": "RISK-004",
+      "name": "动火作业点",
+      "location": "地下室B2防水施工",
+      "category": "动火作业",
+      "level": "Ⅱ级",
+      "status": "在控",
+      "lastCheck": "2026-03-09",
+      "owner": "项目安全部",
+      "control": "严格审批并配备灭火器材"
+    },
+    {
+      "id": "RISK-005",
+      "name": "临边洞口",
+      "location": "5#楼屋面西北角",
+      "category": "临边洞口",
+      "level": "Ⅲ级",
+      "status": "在控",
+      "lastCheck": "2026-03-08",
+      "owner": "班组长",
+      "control": "封闭围挡 + 夜间警示灯"
+    }
+  ]
+}

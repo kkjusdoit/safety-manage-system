@@ -72,3 +72,15 @@ export interface RewardRecord {
   amount: number
   evidence: string
 }
+
+export interface RiskSource {
+  id: string
+  name: string
+  location: string
+  category: string
+  level: 'Ⅰ级' | 'Ⅱ级' | 'Ⅲ级'
+  status: '在控' | '预警' | '整改中'
+  lastCheck: string
+  owner: string
+  control: string
+}
