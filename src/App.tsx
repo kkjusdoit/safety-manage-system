@@ -244,17 +244,17 @@ function App() {
           <div className="hero-card">
             <div>
               <div className="hero-eyebrow">专属定制 · 管理台账</div>
-              <h1>中交海建公司项目安全管理台账系统</h1>
+              <h1>工程建设企业项目安全管理台账系统</h1>
               <p>
-                以“人员全生命周期档案 + 全景安全看板”为核心，服务项目安全管理闭环。
+                以“人员全生命周期档案 + 全景安全看板”为核心，适用于各类项目安全管理场景。
               </p>
             </div>
             <div className="hero-profile">
-              <div className="hero-avatar">陈</div>
+              <div className="hero-avatar">安</div>
               <div>
-                <div className="hero-name">陈中越</div>
-                <div className="hero-role">安全总监</div>
-                <div className="hero-company">中交海建公司</div>
+                <div className="hero-name">安全管理负责人</div>
+                <div className="hero-role">项目安全部</div>
+                <div className="hero-company">某大型工程建设集团</div>
               </div>
             </div>
           </div>
